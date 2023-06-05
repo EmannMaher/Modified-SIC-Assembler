@@ -1,0 +1,17 @@
+symbol      location
+-------------------------
+WRREC      1004
+FIRST      100a
+CLOOP      100d
+RETADR      1014
+ENDFIL      1021
+LENGTH      1034
+INPUT      1037
+MAXLEN      1038
+RDREC      103b
+RLOOP      1041
+EOF      104d
+BUFFER      1056
+EXIT      205a
+OUTPUT      2060
+WLOOP      2064

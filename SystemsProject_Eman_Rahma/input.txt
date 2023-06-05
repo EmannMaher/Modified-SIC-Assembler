@@ -1,0 +1,49 @@
+1 COPY START 1000 //Copy file from input to output
+2 COMP #0 //
+3 NORM //
+4 WRREC LDX #0 //
+5 TIX MAXLEN // loop unless max length
+6 FIRST STL RETADR // sava retard address
+7 CLOOP JSUB RDREC // read input rdrec
+8 FIX //
+9 LDA LENGTH // test for eof (length=0)
+10 RETADR RESW 1 // lenght of record
+11 JEQ ENDFIL // exit if eof found
+12 JSUB WRREC //write output record
+13 J CLOOP // loop
+14 FLOAT //
+15 ENDFIL LDA EOF // insert end of file marked
+16 STA BUFFER //
+17 LDA #3 //
+18 STA LENGTH //
+19 JSUB WRREC //write output record
+20 LDL RETADR //get return address
+21 HIO //
+22 LENGTH RESW 1 //lenght of record
+23 INPUT BYTE X'F1' //
+24 MAXLEN WORD 4096 //
+25 RDREC LDX #0 //
+26 LDA #0 //
+27 RLOOP TD INPUT // test input device
+28 JEQ RLOOP // exit if eof found
+29 RD INPUT //read character into register A
+30 COMP #0 //
+31 EOF BYTE C'EOF' //
+32 JEQ EXIT // exit if eof found
+33 STCH BUFFER,X // store character into buffer
+34 BUFFER RESB 4096 //
+35 JLT RLOOP // has been reached
+36 SIO //
+37 EXIT STX LENGTH // save record lenght
+38 RSUB //
+39 OUTPUT BYTE X'05' //
+40 RSUB //
+41 WLOOP TD OUTPUT //
+42 JEQ WLOOP // exit if eof found
+43 LDCH BUFFER,X //test input device
+44 WD OUTPUT //
+47 RSUB // return to caller
+48 FLOAT //
+50 JLT WLOOP // has been rength
+49 LDA #3 //
+51 END FIRST //
